@@ -1,0 +1,16 @@
+<!-- This whole layout.ejs file is a wrapper to the body variable, which means the 'body' variable will be replaced by the other ejs file which will ultimately help us in creating the final rendered page. The purpose of this layout folder is to define a common styles for all the pages. And if some page needs to have a specific style then that page will have its own css files included in the file itself.-->
+<html>
+    <head>
+        <title>
+            <%= title %>
+        </title>
+        <link rel="stylesheet" href="/css/layout.css">
+        <!-- Here since we have already defined the static folder which consists of css files, which contains layout.css so the app will look for the css in that folder itself. -->
+    </head>
+    <body>
+        <%- include('_header'); %>
+        <%- body %>
+        <!-- This body variable will be replaced by the home.ejs, user_profiles.ejs which will be rendered on the client. -->
+        <%- include('_footer'); %>    
+    </body>
+</html>
