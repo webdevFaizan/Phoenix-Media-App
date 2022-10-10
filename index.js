@@ -3,6 +3,8 @@ const app  = express();
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 // There are some pages that have a list of different fixed header and footer that are present in all the pages, so we must consider these as layouts. Though this is not like the single page applications that are made up on the concept of components re render, instead it is made on the concept of all the layouts will be downloaded from the server again and it will be re rendered again.
+require('./config/mongoose');       //This statement is just to create a connection with the database, the variable that is being exported from the db file will not be used 
+
 
 app.use(express.static('./assets'));    //This is the folder where the app should be looking for the static files. And by ./ means it will look for the static files relative to this folder.
 
@@ -11,7 +13,7 @@ app.use(expressLayouts);        //This will let the app know that we are using a
 
 // extract style and scripts from sub pages into the layout
 app.set('layout extractStyles', true);      //This is present in the express-ejs-layout documentation that if we want to extract the css files from the individual pages and show them in the header section of the layout.ejs page then this line has to be added.
-app.set('layout extractScripts', true);     ////This is present in the express-ejs-layout documentation that if we want to extract the script files from the individual pages and show them in the body section of the layout.ejs page then this line has to be added.
+app.set('layout extractScripts', true);     //This is present in the express-ejs-layout documentation that if we want to extract the script files from the individual pages and show them in the body section of the layout.ejs page then this line has to be added.
 
 
 app.use('/', require('./routes'));
