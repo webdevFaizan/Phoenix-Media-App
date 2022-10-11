@@ -25,10 +25,10 @@ module.exports.createUser = function(req,res){
     //     }
     // }
     
-    console.log(req);
-    // console.log(req.body.email);
-    // console.log(req.body.password);
-    // console.log(req.body.name);
+    // console.log(req);
+    console.log(req.body.email);
+    console.log(req.body.password);
+    console.log(req.body.name);
 
     res.render('home',{
         'title' : 'User Profile Page',
