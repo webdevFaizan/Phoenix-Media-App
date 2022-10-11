@@ -8,11 +8,11 @@ module.exports.profile = function(req,res){
     })
 }
 
-module.exports.createUser = function(req,res){
+module.exports.create = function(req,res){
     // const foundUser = await user.findOne({email : req.email});
     // if(foundUser){
     //     console.log('user already exists, please try a new email id.');
-    //     res.send('back');
+    //     res.redirect('back');
     // }
     // else{
     //     foundUser = await user.create({email : req.body.email, password : req.body.password, name : req.body.name});
