@@ -18,7 +18,7 @@ app.use(cookieParser());        //IMPORTANT : This needs to run the cookie and r
 app.use(express.static('./assets'));    //This is the folder where the app should be looking for the static files. And by ./ means it will look for the static files relative to this folder.
 app.use(expressLayouts);        //This will let the app know that we are using a layout module for the views, which simply means every page will be rendered by going through the layout.ejs file and the variable 'body' will be replaced by the ejs file that has to be loaded. In case of home.ejs this 'body' will load the content of the home.ejs or the user_profile.ejs which will completely render the whole page.
 
-
+//IMPORTANT : Passport is an authentication middleware for node js. And the main function of a middleware is to check for some basic things before passing the control to the next controller function. Also since we are using the passport.js for our authentication and there is some similarity with the manual authentication, but there are difference, in the manual authentication we had used the external cookie, but in passport.js we are using a session-cookie. And by default the session cookie is in encrypted format.
 
 // extract style and scripts from sub pages into the layout
 app.set('layout extractStyles', true);      //This is present in the express-ejs-layout documentation that if we want to extract the css files from the individual pages and show them in the header section of the layout.ejs page then this line has to be added.

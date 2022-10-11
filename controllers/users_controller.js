@@ -1,5 +1,5 @@
 // const mongoose = require('mongoose');
-// import user form '../models/user';
+// import user form '../models/user';       //This is the ES module, whereas the require statement is a common JS module.
 const User = require('../models/user');
 
 module.exports.profile = function(req, res){
@@ -16,7 +16,6 @@ module.exports.profile = function(req, res){
         });
     }else{
         return res.redirect('/users/sign-in');
-
     }    
 }
 
@@ -70,10 +69,7 @@ module.exports.createSession = function(req, res){
 
         }else{
             // handle user not found
-
             return res.redirect('back');
         }
-
-
     });
 }
