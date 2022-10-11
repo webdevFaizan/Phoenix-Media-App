@@ -51,6 +51,6 @@ module.exports.signUp = function(req,res){
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    
+    // IMPORTANT : In the manual authentication method, we were writing a logic to add the user_id to the cookie from this method itself, but now we are creating the session cookie in the passport-local-strategy itself. This will reduce redundant code, since we do not need to create session in all the different function like sign up and sign in as well. It the username and password was correct the session is created an stored in the passport-local-strategy file itself.
     res.redirect('/');
 }

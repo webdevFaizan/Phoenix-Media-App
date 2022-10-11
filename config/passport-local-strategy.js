@@ -20,7 +20,7 @@ passport.use( new LocalStrategy({
     User.findOne({ email: email }, function (err, user) { //Findone method takes first parameter as the unique identifier and in this case it is email.
         if (err) {
             // console.log('Error in finding user --> Passport');
-            req.flash('error',"There is some error");
+            // req.flash('error',"There is some error");
             return done(err);
             // IMPORTANT : This done method always takes 2 parameters, the first one is error, if there is no error, then we can pass null, which is done in the below function, and since this is javascript, therfore when the second parameter is not even passed, this function will properly run. This kind of behaviour is very different in the case of other languages like Java.
         }
