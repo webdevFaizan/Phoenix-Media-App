@@ -51,25 +51,6 @@ module.exports.signUp = function(req,res){
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
-    // steps to authenticate
-    // find the user
-    User.findOne({email: req.body.email}, function(err, user){
-        if(err){console.log('error in finding user in signing in'); return}
-        // handle user found
-        if (user){
-
-            // handle password which doesn't match
-            if (user.password != req.body.password){
-                return res.redirect('back');
-            }
-
-            // handle session creation
-            res.cookie('user_id', user.id);     //IMPORTANT : Creating the session does not mean anything special, it simply means we are storing the data of the user in cookie or local storage so that it could be used later on to verify the authenticity of the user and if or not the user is authorized to use the data he is trying to access.
-            return res.redirect('/users/profile');
-
-        }else{
-            // handle user not found
-            return res.redirect('back');
-        }
-    });
+    
+    res.redirect('/');
 }
