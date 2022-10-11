@@ -31,9 +31,6 @@ app.set('layout extractStyles', true);      //This is present in the express-ejs
 app.set('layout extractScripts', true);     //This is present in the express-ejs-layout documentation that if we want to extract the script files from the individual pages and show them in the body section of the layout.ejs page then this line has to be added.
 
 
-
-app.use('/', require('./routes'));
-
 // set up the view engine
 app.set('view engine', 'ejs');      //I think it is being used to define that engine that is being used to render the pages will be available in this folder itself.
 app.set('views', './views');    //This line will let the server know where to access the views folder, so that when the functions inside the controllers folder is trying to render it would automatically select the files from this folder itself.
@@ -44,8 +41,8 @@ app.use(session({
     name : 'phoenix_cookie',        //This is the name of the session. Or maybe the name of the cookie.
     //TODO : This secret has to be changed when we are going for deployment, since we do not want to hard code it and we do not want anyone else to know about this secret. So we might pass this as the .env file or the envrionement variable file on the deployment server that we have.
     secret : 'blahSomething',
-    saveUninitialized: false,       //When the user is not logged in, then it is not initialised, basically then the cookie does not need to save any data. Then we must not save any data.
-    resave: false,                  //This means when the session data is created, every time I refresh the page do I need to re write the cookie? No. It must be saved once and unless we log out no need to rewrite the cookie.
+    saveUninitialized: false,       //IMPORTANT :   When the user is not logged in, then it is not initialised, basically then the cookie does not need to save any data. Then we must not save any data.
+    resave: false,                  //IMPORTANT : This means when the session data is created, every time I refresh the page do I need to re write the cookie? No. It must be saved once and unless we log out no need to rewrite the cookie. The reason for this is simple, this is a session cookie, and once the session is created we do not need to re-write the session cookie, unless we have logged out and logged in again. But the other cookies could be used to save the data of the user, and it might depend on the page which data is to be saved. As a lot of parameters could be easily tracked on the website. So the cookies could easily use other data.
     cookie : {
         maxAge : (1000*60*1000),
     }
@@ -53,6 +50,13 @@ app.use(session({
 
 app.use(passport.initialize());     //Every time any end point is hit, passport will get initialised, as all of these are the middle ware. This is done so that we could use the passport js authentication for each and every end point that we hit.
 app.use(passport.session());        //IMPORTANT : passport. session() acts as a middleware to alter the req object and change the 'user' value that is currently the session id (from the client cookie) into the true deserialized user object. Means it is basically used to convert the user_id to the actual user object.
+
+app.use(passport.setAuthenticatedUser);
+
+
+// IMPORTANT : The routes has to be in use after the passport has been initialised, since this route will use the passport library to create and store the session cookie. And one logical thing is that routes must be accessible after all the kind of middleware has been properly integrated, if they are not ready, the routes should not be accessible.
+app.use('/', require('./routes'));
+
 
 app.listen(port, function(err){
     if (err){

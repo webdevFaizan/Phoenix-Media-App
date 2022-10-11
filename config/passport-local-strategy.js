@@ -59,4 +59,43 @@ passport.deserializeUser(function(id, done){        //id is simply a variable th
     });
 });
 
+// check if the user is authenticated
+// This is a middle ware that is being used before each and every function call.
+passport.checkAuthentication = function(req, res, next){
+    // if the user is signed in, then pass on the request to the next function(controller's action)
+    if (req.isAuthenticated()){     //This isAuthenticated function is provided by the passport library. And what ever method is calling this checkAuthentication method, will send res, which will be received as req in this method.
+        console.log("here");
+        return next();      //This next is not going to setAuthenticationUser method below, this next is a middle ware between the router and the controller function. And it will only run as a checker between them only.
+    }
+    // if the user is not signed in
+    return res.redirect('/users/sign-in');
+}
+
+
+passport.setAuthenticatedUser = function(req, res, next){       //I am not sure what this function does, the user identity is attatached through the deserializeUser method, as it parse the data out of the cookie to identify the actual user. I am not sure setAutehnticatedUser method even has a significance.
+    if (req.isAuthenticated()){
+        // req.user contains the current signed in user from the session cookie and we are just sending this to the locals for the views. Just understand it like - before passing the important information to some view engine, it will be checked for authentication. 
+        res.locals.user = req.user;     //One question? Where is this res.locals.user actually being used? Because even if we are deleting this method, we can do all the authentication work without it. There is one use, it will save the detail of user in locals object, and this simply means, on any page if we want to use the personal data of the user, locals could be called, just like in the home page (home.ejs), where we did not display text area if locals.user is not present.
+        // console.log('setAuth me hai');
+        // console.log(res.locals.user);
+
+    }
+    /*else{     //This else condition is working, when the user is logged out
+        console.log('setAuth ke else me hai');
+        console.log(res.locals.user);
+    }*/
+    next();
+}
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = passport;
