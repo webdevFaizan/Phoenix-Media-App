@@ -3,20 +3,11 @@
 const User = require('../models/user');
 
 module.exports.profile = function(req, res){
-    if (req.cookies.user_id){
-        User.findById(req.cookies.user_id, function(err, user){
-            if (user){
-                return res.render('user_profiles', {
-                    title: "User Profile",
-                    user: user
-                })
-            }else{
-                return res.redirect('/users/sign-in');
-            }
-        });
-    }else{
-        return res.redirect('/users/sign-in');
-    }    
+    return res.render('user_profiles', {
+        title: 'User Profile',
+        name : req.user.name,
+        email : req.user.email
+    })
 }
 
 module.exports.create = async function(req,res){
@@ -37,20 +28,33 @@ module.exports.create = async function(req,res){
 
 
 module.exports.signIn = function(req,res){
-    res.render('user_sign_in',{
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    return res.render('user_sign_in',{
         'title' : 'Sign In Page'
     })
 }
 
 module.exports.signUp = function(req,res){
-    res.render('user_sign_up',{
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    return res.render('user_sign_up',{
         'title' : 'Sign Up Page'
     })
+}
+
+
+module.exports.destroySession = function(req, res){
+    req.logout();
+
+    return res.redirect('/');
 }
 
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
     // IMPORTANT : In the manual authentication method, we were writing a logic to add the user_id to the cookie from this method itself, but now we are creating the session cookie in the passport-local-strategy itself. This will reduce redundant code, since we do not need to create session in all the different function like sign up and sign in as well. It the username and password was correct the session is created an stored in the passport-local-strategy file itself.
-    res.redirect('/');
+    res.redirect('/users/profile');
 }
