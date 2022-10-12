@@ -6,12 +6,17 @@ const expressLayouts = require('express-ejs-layouts');
 // const { urlencoded } = require('express');
 // There are some pages that have a list of different fixed header and footer that are present in all the pages, so we must consider these as layouts. Though this is not like the single page applications that are made up on the concept of components re render, instead it is made on the concept of all the layouts will be downloaded from the server again and it will be re rendered again.
 require('./config/mongoose');       //This statement is just to create a connection with the database, the variable that is being exported from the db file will not be used.
+const URL = require('./server').URL;
 
 
 //These are required for setting up the session cookie as well as authentication of the user using the passport.js library.
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const session = require('express-session');        //IMPORTANT : It used to create an encrypted session cookie, the session-cookie is not the part of passport, passport.js only keeps the session cookie in itself, but we will have create the session cookie from our side and then send it to the passport.js to be stored and this libarary will be used to do this only.
+
+
+
+const MongoStore= require('connect-mongo');    //This package and object is used to keep the data about the session, everytime we were restarting the server, the session cookie was getting deleted. This could be a bad user experience. Since user will be required to log in every time, and thus saving the session inside the db would be a good experience. And after this variable is defined here, we just need to add an extra parameter inside the session object below with a variable known as 'store' and it will be used to store the current session inside the database itself.
 
 
 
@@ -45,7 +50,17 @@ app.use(session({
     resave: false,                  //IMPORTANT : This means when the session data is created, every time I refresh the page do I need to re write the cookie? No. It must be saved once and unless we log out no need to rewrite the cookie. The reason for this is simple, this is a session cookie, and once the session is created we do not need to re-write the session cookie, unless we have logged out and logged in again. But the other cookies could be used to save the data of the user, and it might depend on the page which data is to be saved. As a lot of parameters could be easily tracked on the website. So the cookies could easily use other data.
     cookie : {
         maxAge : (1000*60*1000),
-    }
+    },
+    store:  MongoStore.create(      //There is some important comparision about MongoStore.create() and this function in my node.js notes, just read it out.
+        {
+            mongoUrl: URL,     //This parameter is simply taking this parameter as the mongoose connection is added in the file.
+            autoRemove: 'disabled'      //This will not allow the session cookie to be deleted from the db.
+        
+        },
+        function(err){      //In case there is some error with connection to mongodb.
+            console.log(err ||  'connect-mongodb setup ok');
+        }
+    )
 }));
 
 app.use(passport.initialize());     //Every time any end point is hit, passport will get initialised, as all of these are the middle ware. This is done so that we could use the passport js authentication for each and every end point that we hit.

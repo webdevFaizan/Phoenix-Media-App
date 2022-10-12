@@ -4,9 +4,7 @@ const User = require('../models/user');
 
 module.exports.profile = function(req, res){
     return res.render('user_profiles', {
-        title: 'User Profile',
-        name : req.user.name,
-        email : req.user.email
+        title: 'User Profile'
     })
 }
 
