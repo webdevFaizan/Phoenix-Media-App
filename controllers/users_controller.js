@@ -45,7 +45,7 @@ module.exports.signUp = function(req,res){
 
 
 module.exports.destroySession = function(req, res){
-    req.logout();
+    req.logout();       //This function is being provided by the passport to the request object, which means it will be able to clear the request object of any session that we have created, which also means we do not need to manually delete the session cookie or deauthenticate the user, he/she will be automatically deauthenticated.
 
     return res.redirect('/');
 }
