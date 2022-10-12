@@ -7,13 +7,20 @@
             <%= title %>
         </title>
         <link rel="stylesheet" href="/css/layout.css">
-        <!-- Here since we have already defined the static folder which consists of css files, which contains layout.css so the app will look for the css in that folder itself. -->
+        <!-- Here since we have already defined the static folder which consists of css files, which contains layout.css so the app will look for the css in that folder itself. -->        
+        <link rel="stylesheet" href="/css/header.css">
+        <link rel="stylesheet" href="/css/footer.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         <%- style %>
         <!-- This line here will simply tell the app that when ever we encounter any css file in any of the home.ejs or the user_profiles.ejs that file should automatically move to the header section of the file. -->
     </head>
     <body>
         <%- include('_header'); %>
-        <%- body %>
+        <main id="layout-main">
+            <%- body %>
+        </main>
         <!-- This body variable will be replaced by the home.ejs, user_profiles.ejs which will be rendered on the client. -->
         <%- include('_footer'); %>    
         <%- script %>
