@@ -19,14 +19,14 @@
                 <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->           
             <li>
                 <p>
-                    <%if(locals.user && post.user == locals.user.id){%>
+                    <%if(locals.user && post.user.id == locals.user.id){%>
                         <div class="postDeleteButton">
-                            <!-- We could have clearly used the form tag to send data, but since there is not much data beside the page link to be sent, we may not use the form tag here. -->
+                            <!--IMPORTANT : We could have clearly used the form tag to send data with the hidden post.id as a hidden input tag as we did earlier., but since there is not much data beside the page link to be sent, we may not use the form tag here. -->
                             <!-- <form action="/posts/destroy/<%post.postOwnerId%>" method="post">                            
                                 <input type="submit" value="Delete Post">
                             </form> -->
                             <!-- We will use the a tag, as a tag will by default send the method with a 'get' request, thus the params will be helpful for this condition. The params are the one that  will be used to extract the data of the post id that will be used to delete the correct post. -->
-                            <a class="post-delete-button" href="/posts/delete/<%=post.id%>">Delete Post</a>
+                            <a class="post-delete-button" href="/posts/destroy/<%=post.id%>">Delete Post</a>
                         </div>
                     <%}%>
                     <%= post.content %>

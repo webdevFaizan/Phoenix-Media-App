@@ -21,10 +21,10 @@ module.exports.delete = function(req,res){
     Post.findById(req.params.id, function(err,post){
         if(err){
             console.log(err);
-            req.flash('error','Some error occured.');
+            // req.flash('error','Some error occured.');
             return;
         }
-        //Note here, we are not taking req.user._id as this would be an Object. But instead we will be taking req.user.id, as this would be the string version of the id. And we want string to be compared with the help of ==, IMPORTANT : Mongoose gives us this inbuilt functionality of converting the object to string, so that the comparision becomes easy.
+        //IMPORTANT : Note here, we are not taking req.user._id as this would be an Object. But instead we will be taking req.user.id, as this would be the string version of the id. And we want string to be compared with the help of ==, IMPORTANT : Mongoose gives us this inbuilt functionality of converting the object to string, so that the comparision becomes easy.
         if(post.user==req.user.id){       //IMPORTANT : If we use locals here, it will not be defined, since locals are only defined for the views so basically we could only use it for ejs files.
             post.remove();
             Comment.deleteMany({post : req.params.id}, function(err){
@@ -40,6 +40,6 @@ module.exports.delete = function(req,res){
         return res.redirect('back');
     });
     // req.flash('success','Post deleted.');            //This will show the pop up message as it will go to the global res.locals.flash, I have explained this problem in a great detail in the "JavaScript Callbacks Variable Scope Problem".
-    console.log('Post not found');
+    // console.log('Post not found');
     // return res.redirect('back');
 }
