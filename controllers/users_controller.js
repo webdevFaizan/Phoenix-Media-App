@@ -44,11 +44,13 @@ module.exports.signUp = function(req,res){
 }
 
 
-module.exports.destroySession = function(req, res){
-    req.logout();       //This function is being provided by the passport to the request object, which means it will be able to clear the request object of any session that we have created, which also means we do not need to manually delete the session cookie or deauthenticate the user, he/she will be automatically deauthenticated.
-
-    return res.redirect('/');
-}
+module.exports.destroySession = function(req, res, next) {
+    req.logout(function(err) {       //This function is being provided by the passport to the request object, which means it will be able to clear the request object of any session that we have created, which also means we do not need to manually delete the session cookie or deauthenticate the user, he/she will be automatically deauthenticated.
+        // IMPORTANT : Since version 0.6.0 (which was released only a few days ago by the time of writing this), req.logout is asynchronous. This is part of a larger change that averts session fixation attacks.  
+      if (err) { return next(err); }
+      return res.redirect('/');
+    });
+  }
 
 
 // sign in and create a session for the user

@@ -15,9 +15,21 @@ const passportLocal = require('./config/passport-local-strategy');
 const session = require('express-session');        //IMPORTANT : It used to create an encrypted session cookie, the session-cookie is not the part of passport, passport.js only keeps the session cookie in itself, but we will have create the session cookie from our side and then send it to the passport.js to be stored and this libarary will be used to do this only.
 
 
-
 const MongoStore= require('connect-mongo');    //This package and object is used to keep the data about the session, everytime we were restarting the server, the session cookie was getting deleted. This could be a bad user experience. Since user will be required to log in every time, and thus saving the session inside the db would be a good experience. And after this variable is defined here, we just need to add an extra parameter inside the session object below with a variable known as 'store' and it will be used to store the current session inside the database itself.
 
+const sassMiddleware = require('node-sass-middleware');
+
+
+
+//This line of code has to be defined before the server starts, simply because we want our scss files to be ready before the server starts.
+// IMORTANT : The scss files cannot be read by the browser, it has to be converted to css files, but every time when you start the server, the scss files will not be converted to the css file, instead it will only happen when you refresh the page and the page will be looking for the css file and then it will converted the scss file of that page to css version. But still scss of each page will never be converted during the server start. This increases the latency of the page loading, since when you go to the page then css is created then loaded, but all of this is for the development server, but when we are in the production server the scss files will be precompiled to css so that the css does not use up latency.
+app.use(sassMiddleware({
+    src: './assets/scss',        //From here we pick up the scss file to be converted to css.
+    dest: './assets/css',        //This is where we will put the css file.
+    debug : false,               //We do not want anything to be debug in the console window once the website goes into the production mode. Output is only used to debug while in developement mode. This will output the result in the console of the server, since the server will be used to display some error of compilation of scss to css.
+    outputStyle: 'extended',    //Whether we want our output to be done in one line or multiple lines, etc.
+    prefix: '/css'      
+}));
 
 
 app.use(express.urlencoded({ extended: false }));    //IMPORTANT : This is the bodyParser, it will help us in parsing the data from the body of the request. Especially from the forms, so that we could easily extract the data from the form.
