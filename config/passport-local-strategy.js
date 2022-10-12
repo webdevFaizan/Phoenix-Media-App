@@ -63,7 +63,8 @@ passport.deserializeUser(function(id, done){        //id is simply a variable th
 // This is a middle ware that is being used before each and every function call.
 passport.checkAuthentication = function(req, res, next){
     // if the user is signed in, then pass on the request to the next function(controller's action)
-    if (req.isAuthenticated()){     //This isAuthenticated function is provided by the passport library. And what ever method is calling this checkAuthentication method, will send res, which will be received as req in this method.        
+    if (req.isAuthenticated()){     //This isAuthenticated function is provided by the passport library. And what ever method is calling this checkAuthentication method, will send res, which will be received as req in this method.
+        // console.log(res.locals.user);
         return next();      //This next is not going to setAuthenticationUser method below, this next is a middle ware between the router and the controller function. And it will only run as a checker between them only.
     }
     // if the user is not signed in
