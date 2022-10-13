@@ -36,11 +36,14 @@ module.exports.create = async function(req,res){
                 post : req.body.post      //We need to keep track of postId on which the comment has been made.
             });               
             await post.comments.push(comment);    //After the comment is successfully created and updated in its own database, we will update the comments in the post's array, which means we are updating and we have a slight different syntax for the updation.
+            req.flash('success', 'Comment published!');
             await post.save();            //IMPORTANT : Whenever we are updating any thing, we need to save it. This method tells the database that for now this is the final version, and we need to block it.
             return res.redirect('/'); 
         }   
     } catch (error) {
-        if(error){console.log(error);return;}    
+        req.flash('error', "Error in commenting.");
+        console.log(error);
+        return;
     }               
 }
 
@@ -80,13 +83,16 @@ module.exports.destroy = async function(req, res){
             let post = await Post.findByIdAndUpdate(postId, {$pull : {comments : req.params.id}})
             // IMPORTANT : The syntax used here is a native mongodb syntax, not the mongoose syntax. Here we are pulling the comment with a specific id and then updating the whole array of comments.
             // IMPORTANT : User.deleteMany({age: {$gte: 10}, function(err){console.log(‘deleted’);});   This is also a good example of using the native mongodb syntax for the deletion purpose. For the age key, if we find anything greater than 10, then this will delete it, right now this is a kind of some complex query, and we can read the mongoose docs for applying any complex query.
+            req.flash('success', 'Comment deleted!');
             return res.redirect('back');        
         }
         else{
+            req.flash('error', 'Unauthorized');
             return res.redirect('back');
         }        
     } catch (error) {
         if(error){
+            req.flash('error', err);
             console.log(error); 
             return;
         }

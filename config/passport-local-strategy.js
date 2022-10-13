@@ -20,14 +20,14 @@ passport.use( new LocalStrategy({
     User.findOne({ email: email }, function (err, user) { //Findone method takes first parameter as the unique identifier and in this case it is email.
         if (err) {
             // console.log('Error in finding user --> Passport');
-            // req.flash('error',"There is some error");
+            req.flash('error',"There is some error");
             return done(err);
             // IMPORTANT : This done method always takes 2 parameters, the first one is error, if there is no error, then we can pass null, which is done in the below function, and since this is javascript, therfore when the second parameter is not even passed, this function will properly run. This kind of behaviour is very different in the case of other languages like Java.
         }
 
         if (!user || user.password != password){
             // console.log('Invalid Username/Password');
-            // req.flash('error',"Invalid Username/Password"); //The custom flash message will be called using a centralised middleware. And we are sending the message from this callback to the flash middleware using this req.flash. This could only be done when we are using req object in this function. For this we need to add a new key value pair in the LocalStrategy object, passReqToCallback() method.
+            req.flash('error',"Invalid Username/Password"); //The custom flash message will be called using a centralised middleware. And we are sending the message from this callback to the flash middleware using this req.flash. This could only be done when we are using req object in this function. For this we need to add a new key value pair in the LocalStrategy object, passReqToCallback() method.
             return done(null, false);       //The first parameter is null, it means there is not error, but the second parameter is false, this means some other problem is there like the password mismatch or username missing.
         }
 

@@ -15,9 +15,11 @@ module.exports.update = function(req, res){
     if(req.user.id == req.params.id){
         User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
             // In this case the req.body is exactly equal to {name: req.body.name, email: req.body.email} this is why we do not need to write it separately.
+            req.flash('success', 'Updated!');            
             return res.redirect('back');
         });
     }else{
+        req.flash('error', 'Unauthorized!');
         return res.status(401).send('Unauthorized');
     }
 }
@@ -34,19 +36,31 @@ module.exports.update = function(req, res){
 
 
 module.exports.create = async function(req,res){
-    var foundUser = await User.findOne({email : req.body.email});
-    if(foundUser){
-        console.log('user already exists, please try a new email id.');
-        res.redirect('/users/sign-in');
+    if (req.body.password != req.body.confirm_password){
+        req.flash('error', 'Passwords do not match');
+        return res.redirect('back');
     }
-    else{
-        foundUser = await User.create({email : req.body.email, password : req.body.password, name : req.body.name});
+
+    try {
+        var foundUser = await User.findOne({email : req.body.email});
         if(foundUser){
-            console.log('user created');
-            res.cookie('user_id', foundUser.id);
-            return res.redirect('/users/profile');
+            console.log('user already exists, please try a new email id.');
+            res.redirect('/users/sign-in');
         }
+        else{
+            foundUser = await User.create({email : req.body.email, password : req.body.password, name : req.body.name});
+            if(foundUser){
+                req.flash('success', 'You have signed up, login to continue!');
+                console.log('user created');
+                res.cookie('user_id', foundUser.id);
+                return res.redirect('/users/profile');
+            }
+        }
+    } catch (error) {
+        req.flash('error', err);
     }
+
+    
 }
 
 
