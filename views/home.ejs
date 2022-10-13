@@ -14,54 +14,8 @@
     <div id="posts-list-container">
         <ul>
             <% for(post of posts){ %>
-                <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->           
-            <li>
-                <p>                    
-                    <%= post.content %>
-                    <br>
-                    <small>
-                        <%= post.user.name %>
-                    </small>
-                    <%if(locals.user && post.user.id == locals.user.id){%>
-                        <div class="postDeleteButton">
-                            <!--IMPORTANT : We could have clearly used the form tag to send data with the hidden post.id as a hidden input tag as we did earlier., but since there is not much data beside the page link to be sent, we may not use the form tag here. -->
-                            <!-- <form action="/posts/destroy/<%post.postOwnerId%>" method="post">                            
-                                <input type="submit" value="Delete Post">
-                            </form> -->
-                            <!-- We will use the a tag, as a tag will by default send the method with a 'get' request, thus the params will be helpful for this condition. The params are the one that  will be used to extract the data of the post id that will be used to delete the correct post. -->
-                            <a class="post-delete-button" href="/posts/destroy/<%=post.id%>">Delete Post</a>
-                        </div>
-                    <%}%>
-                </p>
-                <div class="post-comments">
-                    <% if (locals.user){ %>
-                        <form action="/comments/create" method="POST">
-                            <input type="text" name="content" placeholder="Type Here to add comment..." required>
-                            <input type="hidden" name="post" value="<%= post._id %>" >
-                            <!-- IMPORTANT, the hidden input element is used to set the post._id and it will be used to verify the post when we make comments on the post. -->
-                            <input type="submit" value="Add Comment">
-                        </form>
-                    <% } %>
-                    <div class="post-comments-list">
-                        <ul id="post-comments-<%= post._id %>">
-                            <% for (comment of post.comments){%>                                
-                            <p>
-                                <%= comment.content %>
-                                <br>
-                                <small>
-                                    <%= comment.user.name %>
-                                </small>
-                                <%if(locals.user && comment.user.id == locals.user.id){%>
-                                    <div class="postDeleteButton">
-                                        <a class="post-delete-button" href="/comments/destroy/<%=comment.id%>">Delete Comment</a>
-                                    </div>
-                                <%}%>
-                            </p>    
-                            <%} %>
-                        </ul>
-                    </div>
-                </div>                
-            </li>                
+                <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->    
+                <%- include('_post.ejs')-%>
             <%} %>
         </ul>
     </div>

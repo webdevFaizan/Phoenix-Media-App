@@ -1,0 +1,15 @@
+<!-- Since the home.ejs file was getting too long, we created a separate file for post.ejs and comment.ejs and distributed the code from the main home.ejs file to these files." -->
+<li>
+    <p>
+        <%= comment.content %>
+        <br>
+        <small>
+            <%= comment.user.name %>
+        </small>
+        <%if(locals.user && comment.user.id == locals.user.id){%>
+            <div class="postDeleteButton">
+                <a class="post-delete-button" href="/comments/destroy/<%=comment.id%>">Delete Comment</a>
+            </div>
+        <%}%>
+    </p>
+</li>

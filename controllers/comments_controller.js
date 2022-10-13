@@ -29,6 +29,7 @@ module.exports.destroy = function(req, res){
             //This comment is being saved up in more than one place, first it is being saved in the comments schema and another it is being saved in the array of the comments inside the post schema, why was it saved twice, so that retrieval could be easy for both the sides, first from the comments array and second from the comments schema itself.
             Post.findByIdAndUpdate(postId, {$pull : {comments : req.params.id}}, function(err, post){   
                 // IMPORTANT : The syntax used here is a native mongodb syntax, not the mongoose syntax. Here we are pulling the comment with a specific id and then updating the whole array of comments.
+                // IMPORTANT : User.deleteMany({age: {$gte: 10}, function(err){console.log(‘deleted’);});   This is also a good example of using the native mongodb syntax for the deletion purpose. For the age key, if we find anything greater than 10, then this will delete it, right now this is a kind of some complex query, and we can read the mongoose docs for applying any complex query.
                 return res.redirect('back');
             })
         }
