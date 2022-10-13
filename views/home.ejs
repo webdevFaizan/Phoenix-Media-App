@@ -6,7 +6,7 @@
         <% if(locals.user){ %>
         <!-- IMPORTANT : Using res.locals.user to show user object in all frontend views, this is main advantage and this is how we do not need to send it over and over again from each different end points. Locals here is the global object. -->
         <form action="/posts/create" id="new-post-form" method="POST">
-            <textarea name="content" cols="90" rows="9" placeholder="What is on your mind?" required></textarea>
+            <textarea name="content" cols="50" rows="5" placeholder="What is on your mind?" required></textarea>
             <input type="submit" value="Post">
         </form>
         <% } %>    
