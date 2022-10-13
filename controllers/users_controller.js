@@ -3,10 +3,24 @@
 const User = require('../models/user');
 
 module.exports.profile = function(req, res){
-    return res.render('user_profiles', {
-        title: 'User Profile'
-    })
+    User.findById(req.params.id, function(err, user){
+        return res.render('user_profiles', {
+            title: 'User Profile',
+            profile_user : user
+        })
+    })    
 }
+
+// module.exports.otherUserProfile = function(req, res){
+//     User.findById(req.params.id, function(err, user){
+//         return res.render('user_profiles', {
+//             title: 'User Profile',
+//             user : user
+//         })
+//     })
+// }
+
+
 
 module.exports.create = async function(req,res){
     var foundUser = await User.findOne({email : req.body.email});

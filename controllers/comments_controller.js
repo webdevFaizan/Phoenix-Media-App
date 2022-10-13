@@ -24,6 +24,7 @@ module.exports.create = function(req,res){
 module.exports.destroy = function(req, res){
     Comment.findById(req.params.id,function(err, comment){
         if(comment.user==req.user.id){
+            // IMPORTANT : user.id gets the string of user._id and user._id is of type ObjectId;
             let postId = comment.post;
             comment.remove();
             //This comment is being saved up in more than one place, first it is being saved in the comments schema and another it is being saved in the array of the comments inside the post schema, why was it saved twice, so that retrieval could be easy for both the sides, first from the comments array and second from the comments schema itself.

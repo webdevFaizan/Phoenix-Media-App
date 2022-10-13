@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 module.exports.home = function(req, res){
     // console.log(req.cookies);       //IMPORTANT : cookie always comes from the request, and the request is always raised by the client, so when ever this function is being accessed by accessing the route that is calling this function, the request will consists of the cookie.
@@ -16,9 +17,12 @@ module.exports.home = function(req, res){
         }
     })
     .exec(function(err, posts){     //Initially the callback function was just inside th Post.find() method, but since the QUERY has changed from simple finding of the post to populating the user of the post, this means we will have the callback function inside the exec function.
-        return res.render('home', {     //This file 'home.ejs' will be automatically looked upon in the views folder becuase we have set the view engine to be searched in that file itself.
-            title: "Phoenix | Home",
-            posts:  posts
-        });
+        User.find({},function(err, users){
+            return res.render('home', {     //This file 'home.ejs' will be automatically looked upon in the views folder becuase we have set the view engine to be searched in that file itself.
+                title: "Phoenix | Home",
+                posts:  posts,
+                all_users : users
+            });
+        })
     })
 }
