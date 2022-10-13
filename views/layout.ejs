@@ -7,6 +7,7 @@
             <%= title %>
         </title>
         <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/4008/4008330.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="/css/layout.css">
         <!-- Here since we have already defined the static folder which consists of css files, which contains layout.css so the app will look for the css in that folder itself. -->        
         <link rel="stylesheet" href="/css/header.css">
@@ -29,5 +30,30 @@
         <%- include('_footer'); %>    
         <%- script %>
         <!-- This line here will simply tell the app that when ever we encounter any js file in any of the home.ejs or the user_profiles.ejs that file should automatically move to the last line of the body section of the file. -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+        <script>
+            <% if (flash.success && flash.success.length > 0) {%>
+                new Noty({
+                    theme: 'relax',
+                    text: "<%= flash.success %>",
+                    type: 'success',
+                    layout: 'bottomRight',
+                    timeout: 1500
+                    
+                }).show();    
+            <%} %>
+
+            <% if (flash.error && flash.error.length > 0) {%>
+                new Noty({
+                    theme: 'relax',
+                    text: "<%= flash.error %>",
+                    type: 'error',
+                    layout: 'bottomRight',
+                    timeout: 1500
+                    
+                }).show();    
+            <%} %>
+        </script>
     </body>
 </html>
