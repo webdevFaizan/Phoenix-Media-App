@@ -48,7 +48,7 @@ module.exports.home = async function(req, res){
         });
         let users = await User.find({});
         return res.render('home', {
-            title: "Codeial | Home",
+            title: "Phoenix Media App | Home",
             posts:  posts,
             all_users: users
         });
