@@ -21,6 +21,11 @@ const sassMiddleware = require('node-sass-middleware');
 
 
 
+const flash = require('connect-flash');
+const customMware = require('./config/middleware');
+
+
+
 //This line of code has to be defined before the server starts, simply because we want our scss files to be ready before the server starts.
 // IMORTANT : The scss files cannot be read by the browser, it has to be converted to css files, but every time when you start the server, the scss files will not be converted to the css file, instead it will only happen when you refresh the page and the page will be looking for the css file and then it will converted the scss file of that page to css version. But still scss of each page will never be converted during the server start. This increases the latency of the page loading, since when you go to the page then css is created then loaded, but all of this is for the development server, but when we are in the production server the scss files will be precompiled to css so that the css does not use up latency.
 app.use(sassMiddleware({
@@ -79,6 +84,12 @@ app.use(passport.initialize());     //Every time any end point is hit, passport 
 app.use(passport.session());        //IMPORTANT : passport. session() acts as a middleware to alter the req object and change the 'user' value that is currently the session id (from the client cookie) into the true deserialized user object. Means it is basically used to convert the user_id to the actual user object.
 
 app.use(passport.setAuthenticatedUser);
+
+
+// The addition of this middleware here will create a flash() function that will consist of either success or error message, without the use of this line, req.flash() is undefinded.
+app.use(flash());       //This flash message functionality is to be created on the basis of session-cookies, this is why this method has to be added after the session-cookie is already created. And the flash will be stored in the session-cookie when we are going to sign up or sign in and then it will get cleared, and when we refresh the page this flash message will be deleted from the session-cookie.
+app.use(customMware.setFlash);      //This middleware is used to set the middleware to the res.locals so that we could use that flash message in the front end.
+
 
 
 // IMPORTANT : The routes has to be in use after the passport has been initialised, since this route will use the passport library to create and store the session cookie. And one logical thing is that routes must be accessible after all the kind of middleware has been properly integrated, if they are not ready, the routes should not be accessible.

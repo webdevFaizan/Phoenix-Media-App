@@ -71,7 +71,8 @@ module.exports.signUp = function(req,res){
 
 module.exports.destroySession = function(req, res, next) {
     req.logout(function(err) {       //This function is being provided by the passport to the request object, which means it will be able to clear the request object of any session that we have created, which also means we do not need to manually delete the session cookie or deauthenticate the user, he/she will be automatically deauthenticated.
-        // IMPORTANT : Since version 0.6.0 (which was released only a few days ago by the time of writing this), req.logout is asynchronous. This is part of a larger change that averts session fixation attacks.  
+        // IMPORTANT : Since version 0.6.0 (which was released only a few days ago by the time of writing this), req.logout is asynchronous. This is part of a larger change that averts session fixation attacks.
+      req.flash('success', 'You have logged out!');
       if (err) { return next(err); }
       return res.redirect('/');
     });
@@ -80,6 +81,7 @@ module.exports.destroySession = function(req, res, next) {
 
 // sign in and create a session for the user
 module.exports.createSession = function(req, res){
+    req.flash('success', 'Logged in Successfully');     //IMPORTANT : We come to this line after the control travelling from the middleware, where the res.locals is being set as the custom flash message.
     // IMPORTANT : In the manual authentication method, we were writing a logic to add the user_id to the cookie from this method itself, but now we are creating the session cookie in the passport-local-strategy itself. This will reduce redundant code, since we do not need to create session in all the different function like sign up and sign in as well. It the username and password was correct the session is created an stored in the passport-local-strategy file itself.
     // res.redirect(`/users/profile/${req.user.id}`);
     return res.redirect('/');
