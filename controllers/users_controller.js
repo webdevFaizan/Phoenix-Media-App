@@ -14,6 +14,7 @@ module.exports.profile = function(req, res){
 module.exports.update = function(req, res){
     if(req.user.id == req.params.id){
         User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            // In this case the req.body is exactly equal to {name: req.body.name, email: req.body.email} this is why we do not need to write it separately.
             return res.redirect('back');
         });
     }else{

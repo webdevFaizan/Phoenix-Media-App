@@ -12,7 +12,7 @@
         <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required>
         <input type="submit"  value="Update">
     </form>
-    
+    <!-- The if and else condition will be checked only at the time of the rendering of the page, and the condition that matches will only be sent to the browser and the other condition will never even be sent as html this is why we will not be able to find it on the final html in the browser. -->
 <%}else{%>    
     <!-- else show only the profile info -->
     <p><%= profile_user.name %></p>
