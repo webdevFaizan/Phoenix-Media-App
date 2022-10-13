@@ -32,6 +32,7 @@
 
         <script>
             <% if (flash.success && flash.success.length > 0) {%>
+                //IMPORTANT : Remember one thing, the noty.js will not work without the flash messages, so the connect-flash is going to be used before we could use flash messages. And the flash messages requires the session cookie, so all of these things are required for notyjs to work.
                 new Noty({
                     theme: 'relax',
                     text: "<%= flash.success %>",

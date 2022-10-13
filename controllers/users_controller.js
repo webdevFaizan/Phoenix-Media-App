@@ -53,7 +53,7 @@ module.exports.create = async function(req,res){
                 req.flash('success', 'You have signed up, login to continue!');
                 console.log('user created');
                 res.cookie('user_id', foundUser.id);
-                return res.redirect('/users/profile');
+                return res.redirect(`/users/profile/${foundUser.id}`);
             }
         }
     } catch (error) {
@@ -66,7 +66,7 @@ module.exports.create = async function(req,res){
 
 module.exports.signIn = function(req,res){
     if(req.isAuthenticated()){
-        return res.redirect('/users/profile');
+        return res.redirect(`/users/profile/${req.user.id}`);
     }
     return res.render('user_sign_in',{
         'title' : 'Sign In Page'
@@ -75,7 +75,7 @@ module.exports.signIn = function(req,res){
 
 module.exports.signUp = function(req,res){
     if(req.isAuthenticated()){
-        return res.redirect('/users/profile');
+        return res.redirect(`/users/profile/${req.user.id}`);
     }
     return res.render('user_sign_up',{
         'title' : 'Sign Up Page'
