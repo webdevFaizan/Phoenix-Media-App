@@ -5,3 +5,7 @@
 </h1>
 <h1><%= profile_user.name %></h1>
 <h1><%= profile_user.email %></h1>
+<% if(locals.user && user.id===profile_user.id){ %>
+    <!-- <button onclick='/users/update'>Update Profile</button> -->
+    <a href="/users/update">Update Profile</a>
+<%}%>

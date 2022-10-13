@@ -11,6 +11,17 @@ module.exports.profile = function(req, res){
     })    
 }
 
+module.exports.updateProfile = function(req, res){
+    // User.findById(req.params.id, function(err, user){
+    //     return res.render('user_profiles', {
+    //         title: 'User Profile',
+    //         profile_user : user
+    //     })
+    // })    
+    console.log('Inside the update profile function.');
+    return res.redirect('back');
+}
+
 // module.exports.otherUserProfile = function(req, res){
 //     User.findById(req.params.id, function(err, user){
 //         return res.render('user_profiles', {
