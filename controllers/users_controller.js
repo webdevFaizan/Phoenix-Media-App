@@ -11,15 +11,14 @@ module.exports.profile = function(req, res){
     })    
 }
 
-module.exports.updateProfile = function(req, res){
-    // User.findById(req.params.id, function(err, user){
-    //     return res.render('user_profiles', {
-    //         title: 'User Profile',
-    //         profile_user : user
-    //     })
-    // })    
-    console.log('Inside the update profile function.');
-    return res.redirect('back');
+module.exports.update = function(req, res){
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            return res.redirect('back');
+        });
+    }else{
+        return res.status(401).send('Unauthorized');
+    }
 }
 
 // module.exports.otherUserProfile = function(req, res){
