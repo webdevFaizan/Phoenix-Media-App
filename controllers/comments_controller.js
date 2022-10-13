@@ -19,3 +19,21 @@ module.exports.create = function(req,res){
         }
     });    
 }
+
+
+module.exports.destroy = function(req, res){
+    Comment.findById(req.params.id,function(err, comment){
+        if(comment.user==req.user.id){
+            let postId = comment.post;
+            comment.remove();
+            //This comment is being saved up in more than one place, first it is being saved in the comments schema and another it is being saved in the array of the comments inside the post schema, why was it saved twice, so that retrieval could be easy for both the sides, first from the comments array and second from the comments schema itself.
+            Post.findByIdAndUpdate(postId, {$pull : {comments : req.params.id}}, function(err, post){   
+                // IMPORTANT : The syntax used here is a native mongodb syntax, not the mongoose syntax. Here we are pulling the comment with a specific id and then updating the whole array of comments.
+                return res.redirect('back');
+            })
+        }
+        else{
+            return res.redirect('back');
+        }
+    })
+}
