@@ -20,8 +20,7 @@
         </div>
     </section>
     
-    <section>
-        <div id="user-friends">
+    <section id="user-friends">        
             <h4>Friends</h4>
             <ul>
                 <% for(u of all_users){ %>
@@ -30,7 +29,6 @@
                         <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
                     </p>
                 <%} %>
-            </ul>
-        </div>
+            </ul>        
     </section>
 </div>
