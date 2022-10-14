@@ -12,7 +12,14 @@
                     console.log(data);
                     let newPost = newPostDom(data.data.post);                    
                     $('#posts-list-container>ul').prepend(newPost);     //We are selecting the ul inside the posts-list-contianer. Since it is exactly where we want to add our post, also the > sign in all about selecting the next children.
-                    deletePost($(' .delete-post-button', newPost));     //This method is going to extract the .delete-post-button from the newPost and in turn it will send it to the function, the delete link. 
+                    deletePost($(' .delete-post-button', newPost));     //This method is going to extract the .delete-post-button from the newPost and in turn it will send it to the function, the delete link. Remeber there has to be a space in ' .delete-post-button'
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post Added",
+                        type: 'success',
+                        layout: 'bottomRight',
+                        timeout: 1500                        
+                    }).show();
                 },
                 error : function(e){
                     console.log(e);
@@ -22,19 +29,19 @@
 
 
     // method to delete a post from DOM
-    let deletePost = function(deleteLink){
+    let deletePost = function(deleteLink){      //This function is simply attatching the click listener in the format of the ajax and asynchronous manner and this will only be executed only when we click on it.
         $(deleteLink).click(function(e){    //When we click on the link since it is an a tag, it will try to go to that href, but instead it will be prevented.
             e.preventDefault();
             $.ajax({
                 type: 'get',
                 url: $(deleteLink).prop('href'),    //This will take the ajax request to this link, and in the controller function of this link we will check for the req.xhr object which will in turn return the post_id and we will remove it from the front end, all of this will be done with out refreshing.
                 success: function(data){
-                    $(`#post-${data.data.post_id}`).remove();
+                    $(`#post-${data.data.post_id}`).remove();   //This selection using the postid makes the post selection easy. This is the main reason why we use the id tag this way, it makes the post selection easy. And then we directly delete it by adding remove button.
                     new Noty({
                         theme: 'relax',
                         text: "Post Deleted",
                         type: 'success',
-                        layout: 'topRight',
+                        layout: 'bottomRight',
                         timeout: 1500                        
                     }).show();
                 },error: function(error){

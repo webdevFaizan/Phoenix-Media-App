@@ -24,6 +24,14 @@ module.exports.create = async function(req,res){
         
         // IMPORTANT : This is the first thing we created after creating the $.ajax request, req.xhr means it checking if the request is of ajax type, if yes then it is simply sending the data in the form of json. And this will be received in the success message of the createPost() function of the home_posts.js
         if(req.xhr){
+            //IMPORTANT : if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
+            post = await post
+            .populate({
+                path : 'user',
+                populate: {
+                    path: 'name'
+                }
+            });
             return res.status(200).json({
                 data : {
                     post : post
@@ -38,8 +46,8 @@ module.exports.create = async function(req,res){
             return res.redirect('back');        
         }
     } catch (error) {
-        if(err){
-            req.flash('error', err);
+        if(error){
+            req.flash('error', error);
             console.log('error in creating a post'); 
             return;
         }        
