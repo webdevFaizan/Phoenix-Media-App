@@ -12,6 +12,7 @@
                     console.log(data);
                     let newPost = newPostDom(data.data.post);                    
                     $('#posts-list-container>ul').prepend(newPost);     //We are selecting the ul inside the posts-list-contianer. Since it is exactly where we want to add our post, also the > sign in all about selecting the next children.
+                    deletePost($(' .delete-post-button', newPost));     //This method is going to extract the .delete-post-button from the newPost and in turn it will send it to the function, the delete link. 
                 },
                 error : function(e){
                     console.log(e);
@@ -20,10 +21,34 @@
         })}
 
 
+    // method to delete a post from DOM
+    let deletePost = function(deleteLink){
+        $(deleteLink).click(function(e){    //When we click on the link since it is an a tag, it will try to go to that href, but instead it will be prevented.
+            e.preventDefault();
+            $.ajax({
+                type: 'get',
+                url: $(deleteLink).prop('href'),    //This will take the ajax request to this link, and in the controller function of this link we will check for the req.xhr object which will in turn return the post_id and we will remove it from the front end, all of this will be done with out refreshing.
+                success: function(data){
+                    $(`#post-${data.data.post_id}`).remove();
+                    new Noty({
+                        theme: 'relax',
+                        text: "Post Deleted",
+                        type: 'success',
+                        layout: 'topRight',
+                        timeout: 1500                        
+                    }).show();
+                },error: function(error){
+                    console.log(error.responseText);
+                }
+            });
+        });
+    }
+
+
     let newPostDom = function(post,req){
         return $(`<li id="post-${post._id}">
                     <p>                    
-                        ${post.content}>
+                        ${post.content}
                         <br>
                         <small>
                             ${post.user.name}

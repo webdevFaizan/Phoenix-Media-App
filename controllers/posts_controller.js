@@ -90,7 +90,15 @@ module.exports.delete = async function(req,res){
             await post.remove();
             await Comment.deleteMany({post : req.params.id})
             // console.log('Post is deleted.');
-            req.flash('success', 'Post and associated comments deleted!');
+            // req.flash('success', 'Post and associated comments deleted!');   //In case of the ajax request this req.flash will not be visible, since the session-cookie is not being loaded again as we are not refreshing the page, but instead we need to send the new Noty() object from the ajax function in the home_posts.js file in the deletePost function itself.
+            if(req.xhr){
+                return res.status(200).json({
+                    data : {
+                        post_id : req.params.id
+                    },
+                    message : "Post deleted"
+                })
+            }
         }else{
             req.flash('error', 'You cannot delete this post!');
             // console.log('The post does not exist');
