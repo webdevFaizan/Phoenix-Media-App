@@ -20,8 +20,20 @@ module.exports.create = async function(req,res){
         let post = await Post.create({
             content : req.body.content,
             user : req.user._id     //VERY IMPORTANT : req.user and res.locals.user are the same at this point, as this have been set in the setAuthenticated user, also as far as I could understand we are sending the password along with the req.user as req.user.password, DOUBT : How to stop the user from accessing the password. SOLUTION : I think when in the setAuthenticatedUser when we are assigning, res.locals.user = req.user; then in place of this we should have used res.locals.user = req.user._id; This way only the id of the use that is being deserialised would have been added to the res.locals.user and not the password.
-        });        
+        }); 
+        
+        // IMPORTANT : This is the first thing we created after creating the $.ajax request, req.xhr means it checking if the request is of ajax type, if yes then it is simply sending the data in the form of json. And this will be received in the success message of the createPost() function of the home_posts.js
+        if(req.xhr){
+            return res.status(200).json({
+                data : {
+                    post : post
+                },
+                message : "Post created!"
+            })
+        }
+        
         if(post){
+            // IMPORTANT : In the case of xhr request, this flash message is not published on the front end, since the session-cookie is not being updated and the session cookie gets updated when the page gets refreshed. This is why we need to put this in the createPost() function of the home_posts.js
             req.flash('success', 'Post published!');
             return res.redirect('back');        
         }

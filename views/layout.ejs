@@ -17,6 +17,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
         <%- style %>
         <!-- This line here will simply tell the app that when ever we encounter any css file in any of the home.ejs or the user_profiles.ejs that file should automatically move to the header section of the file. -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <%- include('_header'); %>
@@ -29,6 +30,7 @@
         <%- script %>
         <!-- This line here will simply tell the app that when ever we encounter any js file in any of the home.ejs or the user_profiles.ejs that file should automatically move to the last line of the body section of the file. -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- Noty does not require jQuery, initially it was required but with the updated version jQuery is not required. -->
 
         <script>
             <% if (flash.success && flash.success.length > 0) {%>
