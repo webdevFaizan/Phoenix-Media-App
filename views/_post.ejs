@@ -1,6 +1,7 @@
 <!-- Since the home.ejs file was getting too long, we created a separate file for post.ejs and comment.ejs and distributed the code from the main home.ejs file to these files." -->
+<!-- IMPORTANT : In this id below it does not matter if you are giving it post._id or post.id, here we are not comparing, we are just displaying and whether it be in a string format or it being a object does not matter at any point, we could easily add the id into the li tag. -->
 
-<li>
+<li id="post-<%=post._id%>">
     <p>                    
         <%= post.content %>
         <br>
@@ -14,7 +15,7 @@
                     <input type="submit" value="Delete Post">
                 </form> -->
                 <!-- We will use the a tag, as a tag will by default send the method with a 'get' request, thus the params will be helpful for this condition. The params are the one that  will be used to extract the data of the post id that will be used to delete the correct post. -->
-                <a class="post-delete-button" href="/posts/destroy/<%=post.id%>">Delete Post</a>
+                <a class="delete-post-button" href="/posts/destroy/<%=post.id%>">Delete Post</a>
             </div>
         <%}%>
     </p>
