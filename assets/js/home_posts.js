@@ -28,7 +28,7 @@
         })}
 
 
-    // method to delete a post from DOM
+    //IMPORTANT : Method to delete a post from DOM, but this method will only be applied to the newly created post, all the posts that are added before refreshing will still be deleted using the old method, since ajax has not been applied on them still. And if we want to add ajax to them this will be done while the whole page is being reloaded separately.
     let deletePost = function(deleteLink){      //This function is simply attatching the click listener in the format of the ajax and asynchronous manner and this will only be executed only when we click on it.
         $(deleteLink).click(function(e){    //When we click on the link since it is an a tag, it will try to go to that href, but instead it will be prevented.
             e.preventDefault();
@@ -77,7 +77,29 @@
                     </div>                
                 </li>                
             `);
-    }        
+    }
+
+
+
+    // IMPORTANT SUMMARY : All the already loaded post is now converted to ajax, an honestly there was not much, only the delete button had to be taken care of handling asynchronously.
+
+    // loop over all the existing posts on the page (when the window loads for the first time) and call the delete post method on delete link of each, also add AJAX (using the class we've created) to the delete button of each.
+    //Since the post created before we created, AJAX method was not based on AJAX, so the delete link is not having an AJAX link, this is how retrospecitvely when we upgrade the version of any application, the old posts or old functionality could be integrated with the new functionality. 
+    let convertPostsToAjax = function(){
+        $('#posts-list-container>ul>li').each(function(){
+            let self = $(this);
+
+            let deleteButton = $(' .delete-post-button', self);
+            deletePost(deleteButton);
+
+            // get the post's id by splitting the id attribute
+            let postId = self.prop('id').split("-")[1]
+            // new PostComments(postId);            //Uncomment this comment to add comments to the posts. I did not do it now since I did not completely understand this part. I have to research this part again, why is this class based component working just fine? Also as I know, since this line is not absolutely necessary for the whole website to be functioning, this line will only make this asynchronous. In the post controller of the comment creation we have not even added the if(req.xhr) condition which means there will be no error while execution of synchronous non-single page website.            
+        });
+    }
+
+
 
     createPost();       //This function is simply adding an event handler to the post submit button, and that button will simply add the ajax type of request so that it will not go through the normal request response cycle by refreshing the page, instead it will go through the ajax request.
+    convertPostsToAjax();       //After creating the new functionality of AJAX, we could easily add the new functionality to all the posts retrospectively. We converted the post to AJAX and added a delete link to it so that all the old posts could be deleted asynchronously. This must be how the version control system works, we always comes up with some or the other new functionality but we have to take care of the old functionality as well adding them to the new functionality retrospectively.
 }
