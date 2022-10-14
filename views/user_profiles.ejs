@@ -6,10 +6,11 @@
 
 
 <% if(user.id == profile_user.id){ %>
-    <!-- if user matches then show the form -->
-    <form action="/users/update/<%= profile_user.id %>" method="POST">
+    <!-- IMPORTANT : enctype is the multipart/form-data this simply means the following form will not only consist of string type of data but also consist of files, and since files are nothing but a stream of large strings, it could be uploaded from the local computer, but it will be stored onto some local storage or some bucket and the reference to that file will be given on in the data base, so that it could display the file. -->
+    <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="POST">
         <input type="text" name="name" placeholder="Your Name" value="<%= profile_user.name %>" required>
         <input type="email" name="email" placeholder="Your Email" value="<%= profile_user.email %>" required>
+        <input type="file" name="avatar" placeholder="Profile Picture">
         <input type="submit"  value="Update">
     </form>
     <!-- The if and else condition will be checked only at the time of the rendering of the page, and the condition that matches will only be sent to the browser and the other condition will never even be sent as html this is why we will not be able to find it on the final html in the browser. -->
