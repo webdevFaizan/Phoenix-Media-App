@@ -87,7 +87,7 @@
     //Since the post created before we created, AJAX method was not based on AJAX, so the delete link is not having an AJAX link, this is how retrospecitvely when we upgrade the version of any application, the old posts or old functionality could be integrated with the new functionality. 
     let convertPostsToAjax = function(){
         $('#posts-list-container>ul>li').each(function(){
-            let self = $(this);
+            let self = $(this);     //IMPORTANT : If we had used up the for each method to iterate this loop then 'this' object would not have been required, since forEach() method consists of the current element and on the current element we will have the event listener attatched.
 
             let deleteButton = $(' .delete-post-button', self);
             deletePost(deleteButton);
