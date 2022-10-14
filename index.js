@@ -96,6 +96,9 @@ app.use(customMware.setFlash);      //This middleware is used to set the middlew
 app.use('/', require('./routes'));
 
 
+
+app.use('/uploads', express.static(__dirname + '/uploads'));        // IMPORTANT : This route that is being created will enable the server to access this route when ever the request for this route comes up. This path was being used by the server to find the images uploaded, but if the '/uploads' route is not available then this will be a major problem since we will not be able to access this uploads path.
+
 app.listen(port, function(err){
     if (err){
         console.log(`Error in running the server: ${err}`);

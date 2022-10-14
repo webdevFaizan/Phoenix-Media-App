@@ -1,6 +1,8 @@
 // const mongoose = require('mongoose');
 // import user form '../models/user';       //This is the ES module, whereas the require statement is a common JS module.
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
 module.exports.profile = function(req, res){
     User.findById(req.params.id, function(err, user){
@@ -41,7 +43,7 @@ module.exports.update = async function(req, res){       //This update form is be
                     user.name = req.body.name;      //We would have not been able to read the name and email field since this is the multipart form and not the general form, this is how we read through the multi part form. In the multipart form the name of the user and content of photo and videos will be accessible in a different manner.
                     user.email = req.body.email;        //Once we submit the form, this data will be transmitted as req.body.
                     if (req.file){
-                        if (user.avatar){   //This check if in the new form that we are submitting, whether there is any user.avatar present or not. If there is no user avatar this will not be executed.
+                        if (user.avatar){   //This check if in the new form that we are submitting, whether there is any user.avatar present or not. If there is no user avatar means we are uploading a new file. If it exists this means we have had an avatar for this user already and it needs to be deleted if we do not want the old avatars to be saved forever.
                             fs.unlinkSync(path.join(__dirname, '..', user.avatar)); //If the path name in the user.avatar exist, but some hacker has deleted the database, and if we use this method to delete a file that has a path name but the actual file is missing, then in that case, this method will give an error. It will work fine if the path name of the user.avatar and the file is actually present at the designated location, but if it is not then this try catch block will not let the whole website crash. And after this if condition, the path of user.avatar will be updated. And there will be only one current file for one current avatar. Along with its value of the path in the user.avatar
                         }
                         // this is saving the path of the uploaded file into the avatar field in the user
