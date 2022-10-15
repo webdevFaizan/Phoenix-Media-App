@@ -13,6 +13,7 @@ const URL = require('./server').URL;
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const passportJWT = require('./config/passport-jwt-strategy');
+const passportGoogle = require('./config/passport-google-oauth2-strategy');
 const session = require('express-session');        //IMPORTANT : It used to create an encrypted session cookie, the session-cookie is not the part of passport, passport.js only keeps the session cookie in itself, but we will have create the session cookie from our side and then send it to the passport.js to be stored and this libarary will be used to do this only.
 
 
