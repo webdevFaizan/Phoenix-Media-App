@@ -30,5 +30,9 @@ router.get('/auth/google', passport.authenticate('google', {scope: ['profile', '
 router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/sign-in'}), usersController.createSession);
 
 
+// IMPORTANT : We need the passport-local-strategy even when we are using google to login, this is simply because an authorization from google account needs to be saved so that we could even remember on a later stage that a user that logged in from google was also present in the db.
+
+
+
 
 module.exports = router;

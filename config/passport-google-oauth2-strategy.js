@@ -38,6 +38,9 @@ passport.use(new googleStrategy({
                 });
             }
 
+
+            //IMPORTANT : WE CAN DELETE THE ACCESS TOKEN AS WELL. So tha no one can use it after we have created the account. But we will have to study the docs for this.
+            //Also while signing out of the Phoenix-Media-App we could also sign out of google account, all of this is in the docs but we do not do this, since it would be an irritating experinece for user, as no one want to log in to google multiple times.
         }); 
     }
 ));
