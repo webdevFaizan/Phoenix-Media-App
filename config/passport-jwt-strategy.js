@@ -12,6 +12,7 @@ opts.secretOrKey = 'phoenix';      //This is the encrypting key, that will be us
 
 // IMPORTANT SUMMARY : This strategy here is only to decrypt the data from the jwt, in the api create-session route, we were using the function createSession() to create the back end api, which simply means we were simply creating the token and when we have to use this token we will use this file's code to decrypt and use it as required.
 
+// IMPORTANT SUMMARY : In the code with harry's project we were creating the json web token all by ourselves, but in this project while we are creating the api authorization, we are using the passport-jwt authorization to create the authentication, this simply requires reading the docs, also note at this point in code, we have two authorization working so that we are able to delete the post or do some other authorized task, we can use normal local-strategy to handle the authoriztion, also we are able to create jwt authorization to create a secondary authorization so that we could do all the auth realted work. Like allowing only specific users to delete the post. IMPORTANT : Authorization is simply a pre-check to verify whether the logged in user is allowed to do some task or not, in the end the method of authorization is not important, it is all about if you are able to reach the if condition of accessing and altering the db. If you are then you can change the db. And this is what authorization is all about.
 
 
 // In the callback function below, we have a jwtPayLoad, which will be extracted from the jwt, and the jwt contains 3 different part. And done is also the name of the callback that will be used to find the call the function after the action is completed.
@@ -22,8 +23,8 @@ passport.use(new JWTStrategy(opts, function(jwtPayLoad, done) {     //This funct
             return done(err, false);
         }
         if (user) { //if the user is authenticated, then passport will automatically set the user as req.user, this simply means the user will be ready to access what every it could access.
-            console.log("jwt-user is " +user.id);
-            return done(null, user);        //First parameter is false, means the error is null
+            console.log("jwt-user is " +user.id);       //This line is just to make sure that the user has logged in properly, and this file's code is behaving properly, and once the decryption is done, if the json web token is correct, the user will be set to the request object which will be used to complete all the necessary actions.
+            return done(null, user);        //IMPORTANT : First parameter is false, means the error is null, and this done function will keep the user in the request object, since we are using req.user.id in the destroy method to validate if the user logged in is the same on who created the post or not.
         } else {
             return done(null, false);       //Second parameter is false, means the user function is not found.
             // or you could create a new account
