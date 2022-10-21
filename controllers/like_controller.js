@@ -8,6 +8,7 @@ module.exports.toggleLike = async function(req, res){
         // likes/toggle/?id=abcdef&type=Post, this is going to be the url and from this we will extract the id and type of the content where this like has been made. Why only id and type is important? Because it is enough to uniquely identify the like in the array of likes.
         let likeable;
         let deleted = false;
+        // console.log('Here')
 
         if (req.query.type == 'Post'){
             likeable = await Post.findById(req.query.id).populate('likes');
@@ -39,7 +40,7 @@ module.exports.toggleLike = async function(req, res){
             likeable.likes.push(newLike._id);
             likeable.save();
         }
-        return res.json(200, {      //Here the return method is behaving like an API, we use this API to make async call so that we do not need to refresh the page, and asycn await works beautifully.
+        return res.status(200).json({      //Here the return method is behaving like an API, we use this API to make async call so that we do not need to refresh the page, and asycn await works beautifully.
             message: "Request successful!",
             data: {
                 deleted: deleted        //IMPORTANT : Since this is the api, which means this data will be used to communicate the deletion data. This will be used to tell the front end that the like is to be deleted or not.

@@ -13,6 +13,9 @@
                     let newPost = newPostDom(data.data.post);                    
                     $('#posts-list-container>ul').prepend(newPost);     //We are selecting the ul inside the posts-list-contianer. Since it is exactly where we want to add our post, also the > sign in all about selecting the next children.
                     deletePost($(' .delete-post-button', newPost));     //This method is going to extract the .delete-post-button from the newPost and in turn it will send it to the function, the delete link. Remeber there has to be a space in ' .delete-post-button'
+
+                    // CHANGE :: enable the functionality of the toggle like button on the new post
+                    new ToggleLike($(' .toggle-like-button', newPost));
                     new Noty({
                         theme: 'relax',
                         text: "Post Added",
@@ -56,6 +59,13 @@
         return $(`<li id="post-${post._id}">
                     <p>                    
                         ${post.content}
+                        <small>
+                            
+                                <a class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${post._id}&type=Post">
+                                    0 Likes
+                                </a>
+                            
+                        </small>
                         <br>
                         <small>
                             ${post.user.name}

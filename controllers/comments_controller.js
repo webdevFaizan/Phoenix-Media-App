@@ -1,5 +1,7 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
+const Like = require('../models/like');
+
 const commentsMailer = require('../mailers/comments_mailer');
 const commentEmailWorker = require('../workers/comment_email_worker');
 const queue = require('../config/kue');
@@ -97,6 +99,9 @@ module.exports.destroy = async function(req, res){
             let post = await Post.findByIdAndUpdate(postId, {$pull : {comments : req.params.id}})
             // IMPORTANT : The syntax used here is a native mongodb syntax, not the mongoose syntax. Here we are pulling the comment with a specific id and then updating the whole array of comments.
             // IMPORTANT : User.deleteMany({age: {$gte: 10}, function(err){console.log(‘deleted’);});   This is also a good example of using the native mongodb syntax for the deletion purpose. For the age key, if we find anything greater than 10, then this will delete it, right now this is a kind of some complex query, and we can read the mongoose docs for applying any complex query.
+
+            // CHANGE :: destroy the associated likes for this comment
+            await Like.deleteMany({likeable: comment._id, onModel: 'Comment'});
             req.flash('success', 'Comment deleted!');
             return res.redirect('back');        
         }
@@ -106,7 +111,7 @@ module.exports.destroy = async function(req, res){
         }        
     } catch (error) {
         if(error){
-            req.flash('error', err);
+            req.flash('error', error);
             console.log(error); 
             return;
         }

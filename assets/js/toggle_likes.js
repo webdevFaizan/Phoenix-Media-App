@@ -3,10 +3,12 @@ class ToggleLike{
     constructor(toggleElement){
         this.toggler = toggleElement;
         this.toggleLike();
+        // console.log('created')
     }
     toggleLike(){
         $(this.toggler).click(function(e){
             e.preventDefault();
+            // console.log('Clicked')
             let self = this;
 
             // this is a new way of writing ajax which you might've studied, it looks like the same as promises
@@ -18,16 +20,22 @@ class ToggleLike{
                 let likesCount = parseInt($(self).attr('data-likes'));
                 console.log(likesCount);
                 if (data.data.deleted == true){
-                    likesCount -= 1;                    
+                    likesCount -= 1;
+                    
                 }else{
                     likesCount += 1;
                 }
+
+
                 $(self).attr('data-likes', likesCount);
                 $(self).html(`${likesCount} Likes`);
+
             })
             .fail(function(errData) {
                 console.log('error in completing the request');
             });
+            
+
         });
     }
 }
