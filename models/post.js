@@ -15,6 +15,12 @@ const postSchema = new mongoose.Schema({
             type:  mongoose.Schema.Types.ObjectId,      //And same would be true for the comments as well, and the post and user has 1:1 relationship, but the post and comments has 1:N relationship.
             ref: 'Comment'
         }
+    ],
+    likes : [
+            {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'Like'
+        }
     ]
 },{
     timestamps: true

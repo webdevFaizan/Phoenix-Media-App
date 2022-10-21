@@ -44,13 +44,12 @@ module.exports.create = async function(req,res){
 
             comment = await comment.populate('user', 'name email');
             console.log(comment);
-            // commentsMailer.newComment(comment);
+            // commentsMailer.newComment(comment);      //IMPORTANT : Now with the case of kue integration, we will now be able to integrate the commentsControllers using the queue, when we are using the web workers and kue.js, we are not calling the comments controller we are calling in the queue that is managing the worker for the kue. And then we are calling the comment controllers from the web worker file.
             let job = queue.create('emails', comment).save(function(err){
                 if(err){
                     console.log("Error in sending to the queue", err);
                     return;
                 }
-
                 console.log(job.id);
             });
             return res.redirect('/'); 
