@@ -1,6 +1,8 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const commentsMailer = require('../mailers/comments_mailer');
+const commentEmailWorker = require('../workers/comment_email_worker');
+const queue = require('../config/kue');
 
 
 // Method 1 - Synchronous code.
@@ -42,7 +44,15 @@ module.exports.create = async function(req,res){
 
             comment = await comment.populate('user', 'name email');
             console.log(comment);
-            commentsMailer.newComment(comment);
+            // commentsMailer.newComment(comment);
+            let job = queue.create('emails', comment).save(function(err){
+                if(err){
+                    console.log("Error in sending to the queue", err);
+                    return;
+                }
+
+                console.log(job.id);
+            });
             return res.redirect('/'); 
         }   
     } catch (error) {
