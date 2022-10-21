@@ -95,6 +95,9 @@ module.exports.delete = async function(req,res){
         //IMPORTANT : Note here, we are not taking req.user._id as this would be an Object. But instead we will be taking req.user.id, as this would be the string version of the id. And we want string to be compared with the help of ==, IMPORTANT : Mongoose gives us this inbuilt functionality of converting the object to string, so that the comparision becomes easy.
     
         if(post.user==req.user.id){       //IMPORTANT : If we use locals here, it will not be defined, since locals are only defined for the views so basically we could only use it for ejs files.
+            // CHANGE :: delete the associated likes for the post and all its comments' likes too
+            await Like.deleteMany({likeable: post, onModel: 'Post'});
+            await Like.deleteMany({_id: {$in: post.comments}});
             await post.remove();
             await Comment.deleteMany({post : req.params.id})
             // console.log('Post is deleted.');

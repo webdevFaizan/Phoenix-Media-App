@@ -44,8 +44,11 @@ module.exports.home = async function(req, res){
             path: 'comments',
             populate: {
                 path: 'user'
+            },
+            populate : {
+                path : 'likes'      //This will populate the likes of the comments of the post.
             }
-        });
+        }).populate('likes');       //This will populate the likes of the post.
         let users = await User.find({});
         return res.render('home', {
             title: "Phoenix Media App | Home",
