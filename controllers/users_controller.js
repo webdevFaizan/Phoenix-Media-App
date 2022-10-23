@@ -182,10 +182,27 @@ module.exports.createFriend = async function(req, res){
 
 module.exports.deleteFriend = async function(req, res){
     try {
-        console.log('inside Delete friend');
+        let user = await User.findById(req.user.id);
+        if(user){
+            user.friends.pull(req.params.id);
+            await user.save();
+        }
+        let user2 = await User.findById(req.params.id);
+        if(user2){
+            user2.friends.pull(req.user.id);
+            await user2.save();                
+        } 
+        let found1 = await Friends.findOne({from_user: req.user.id});
+        let found2 = await Friends.findOne({from_user: req.params.id});
+        if(found1)
+        found1.remove();
+        if(found2)
+        found2.remove();
+
+        Friends.save();
         return res.redirect('back');
-    } catch (error) {
-        
+    } catch (error) {        
+        console.log(error);
     }
     return res.redirect('back');
 }
