@@ -134,10 +134,17 @@ module.exports.signUp = function(req,res){
 
 
 module.exports.destroySession = function(req, res, next) {
-    let name = req.user.name;
+    let name;
+    if(req.user){
+        name = req.user.name;
+    }
     req.logout(function(err) {       //This function is being provided by the passport to the request object, which means it will be able to clear the request object of any session that we have created, which also means we do not need to manually delete the session cookie or deauthenticate the user, he/she will be automatically deauthenticated.
         // IMPORTANT : Since version 0.6.0 (which was released only a few days ago by the time of writing this), req.logout is asynchronous. This is part of a larger change that averts session fixation attacks.
-      req.flash('success', 'You have logged out! '+name);
+        let str = 'You have logged out! ';
+        if(name){
+            str=str+' '+name;
+        }
+      req.flash('success', str);
       if (err) { return next(err); }
       return res.redirect('/');
     });
@@ -244,7 +251,7 @@ module.exports.verifyToken = async function(req,res){
     let verifiedToken = jwt.verify(req.params.token,'phoenix');    
     let user = await User.findOne({email : verifiedToken.email});    
     if(user){
-        return res.render('reset_password.ejs',{
+        return res.render('reset_password',{
             email : verifiedToken.email,
             title : "Reset Password Page"
         })
@@ -255,8 +262,6 @@ module.exports.verifyToken = async function(req,res){
 }
 
 module.exports.updatePassword = async function(req,res){
-    // console.log(req.body.email);    
-    // console.log(req.body.pass);
     if(req.body.pass!==req.body.confirmPass){
         console.log('Password does not match.');
         return res.redirect('/users/sign-in');
@@ -271,5 +276,13 @@ module.exports.updatePassword = async function(req,res){
 
 
 module.exports.deleteAccount = async function(req,res){
-    
+    console.log("Inside the delete account method.")
+    let user =  await User.findOne({email : req.user.email});    
+    console.log(user);
+    if (user){
+        user.remove();
+        // user.save();
+    }
+    // req.logout();
+    return res.redirect('/users/sign-out');
 }

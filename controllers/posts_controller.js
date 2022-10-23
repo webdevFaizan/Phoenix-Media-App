@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
+const Like = require('../models/like');
 
 
 // Method 1 - Callback hell.
@@ -118,7 +119,7 @@ module.exports.delete = async function(req,res){
         }
         // req.flash('success','Post deleted.');       //This message is inside the callback hell, it is not being passed to the res.locals.flash, so this will never be displayed as a pop up message, I have researched about it, just find "JavaScript Callbacks Variable Scope Problem" topic in node.docs file and you will get the answer.
         return res.redirect('back');        
-    } catch (error) {
+    } catch (err) {
         console.log(err);
         req.flash('error', "Cannot post, something went wrong.");
         return res.redirect('/');
