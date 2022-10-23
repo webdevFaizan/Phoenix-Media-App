@@ -235,6 +235,36 @@ module.exports.generateForgotToken = async function(req,res){
     resetPasswordMailer.resetPassword(token,email);
     // let verifiedToken = jwt.verify(token,'phoenix');
     // console.log(verifiedToken);
-
     return res.redirect('back');
+}
+
+
+module.exports.verifyToken = async function(req,res){
+    // console.log('Token received');    
+    let verifiedToken = jwt.verify(req.params.token,'phoenix');    
+    let user = await User.findOne({email : verifiedToken.email});    
+    if(user){
+        return res.render('reset_password.ejs',{
+            email : verifiedToken.email,
+            title : "Reset Password Page"
+        })
+    }
+    else{
+        return res.redirect('/users/sign-in');
+    }
+}
+
+module.exports.updatePassword = async function(req,res){
+    console.log(req.body.email);    
+    console.log(req.body.pass);
+    if(req.body.pass!==req.body.confirmPass){
+        console.log('Password does not match.');
+        return res.redirect('/users/sign-in');
+    }
+    else{
+        let user = await User.findOneAndUpdate({email : req.body.email}, {password : req.body.pass}, {new : true});
+        console.log(user);
+        console.log('Password updated');
+        return res.redirect('/users/sign-in');
+    }
 }

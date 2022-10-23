@@ -28,6 +28,14 @@ router.get('/reset-password', passport.checkAuthentication, usersController.rese
 router.post('/generate-forgot-token', usersController.generateForgotToken);
 
 
+//IMPORTANT : The following is the router to handle the reset password.
+router.get('/:token', usersController.verifyToken);
+
+
+//Password to be updated after token verification.
+router.post('/update-password', usersController.updatePassword);
+
+
 //IMPORTANT : The interesting part about this route is that '/auth/google' is already given by passport library. When ever we try to access this route, then this will automatically call the google-oauth-strategy. This passport.authenticate is telling the app to use the specified strategy for authentication, with some other parameters that are usually avaialble in the docs, read the docs for this.
 router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));     //IMPORTANT : scope is the list of variable that we are seeking to access, profile information we want, also the 'email' is an extra information that will be required, so we need to add it manually, as email is not the part of profile.
 
