@@ -4,6 +4,8 @@ const User = require('../models/user');
 const fs = require('fs');
 const path = require('path');
 const Friends = require('../models/friends');
+// const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports.profile = function(req, res){
     User.findById(req.params.id, function(err, user){
@@ -211,11 +213,25 @@ module.exports.deleteFriend = async function(req, res){
 
 module.exports.forgotPassword = function(req, res){
     console.log('Inside forgot Password method');
-    return res.redirect('back');
+
+    return res.render('forgot_password',{
+        title : 'Forgot Password Page'
+    });
+    // return res.redirect('back');
 }
 
 
 module.exports.resetPassword = function(req,res){
     console.log('Inside reset Password method');
+    return res.redirect('back');
+}
+
+
+module.exports.generateForgotToken = async function(req,res){
+    // console.log(req.body.email);    
+    let token = jwt.sign({email : req.body.email} , 'phoenix', {expiresIn : 100000});
+    console.log(token);
+    let verifiedToken = jwt.verify(token,'phoenix');
+    console.log(verifiedToken);
     return res.redirect('back');
 }

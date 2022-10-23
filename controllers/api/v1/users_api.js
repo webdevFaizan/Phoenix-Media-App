@@ -1,9 +1,6 @@
 const User = require('../../../models/user');
 const jwt = require('jsonwebtoken');        //This is the json webtoken that will be used to create an encrypted web token and this is a web token not created to store in the local machine, it will make the jsonwebtoken encrypted and decrypted each time we transact or hit any endpoint.
 
-
-
-
 module.exports.createSession= async function(req,res){
     try{
         let user = await User.findOne({email : req.body.email});        //We will take the email as user name from the form that we try to fill in our sign in page, then we simply find if any user with this name is present or not. If yes then we proceed.
