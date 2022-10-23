@@ -255,8 +255,8 @@ module.exports.verifyToken = async function(req,res){
 }
 
 module.exports.updatePassword = async function(req,res){
-    console.log(req.body.email);    
-    console.log(req.body.pass);
+    // console.log(req.body.email);    
+    // console.log(req.body.pass);
     if(req.body.pass!==req.body.confirmPass){
         console.log('Password does not match.');
         return res.redirect('/users/sign-in');
@@ -267,4 +267,9 @@ module.exports.updatePassword = async function(req,res){
         console.log('Password updated');
         return res.redirect('/users/sign-in');
     }
+}
+
+
+module.exports.deleteAccount = async function(req,res){
+    
 }
