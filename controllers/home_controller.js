@@ -1,5 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
+const Friends = require('../models/friends');
 
 
 
@@ -49,11 +50,14 @@ module.exports.home = async function(req, res){
             }
         }).populate('likes');       //This will populate the likes of the post.
         let users = await User.find({});
+        let current_user = await User.findById(req.user.id).populate('friends');
+        console.log(users);
+        console.log(current_user.friends);
         return res.render('home', {
             title: "Phoenix Media App | Home",
             posts:  posts,
             all_users: users,
-            friends : req.user.friends
+            friends : current_user.friends
         });
     }catch(err){
         console.log('Error', err);

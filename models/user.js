@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     friends : [{
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'Friends'
+        ref : 'User'
     }]
 },{
     timestamps : true
