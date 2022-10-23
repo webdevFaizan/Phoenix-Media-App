@@ -34,14 +34,18 @@
         </section>
         <section id="user-friends">
             <h4>Friends</h4>
-            <ul>
-                <% for(u of friends){ %>
-                    <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->
-                    <p>
-                        <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
-                    </p>
-                <%} %>
-            </ul>        
+            <%if(locals.user){%>
+                <ul>
+                    <% for(u of friends){ %>
+                        <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->
+                        <p>
+                            <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
+                        </p>
+                    <%} %>
+                </ul>   
+            <%}else{%>
+                <p>Login to see your friends</p>
+            <%}%>
         </section>
     </section>    
 </div>
