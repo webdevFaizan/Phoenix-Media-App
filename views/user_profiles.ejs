@@ -25,6 +25,9 @@
     <% if(isFriend) {%>
         <p>Friend</p>
     <%}else{%>
-        <p>Send Friend Request</p>
+        <!-- <p>Send Friend Request</p> -->
+        <button>
+            <a href="/users/create-friend/<%=profile_user.id%>">Send Friend Request</a>
+        </button>
     <%}%>
 <%} %>

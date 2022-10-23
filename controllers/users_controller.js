@@ -3,6 +3,7 @@
 const User = require('../models/user');
 const fs = require('fs');
 const path = require('path');
+const Friends = require('../models/friends');
 
 module.exports.profile = function(req, res){
     User.findById(req.params.id, function(err, user){
@@ -150,4 +151,30 @@ module.exports.createSession = function(req, res){
     // IMPORTANT : In the manual authentication method, we were writing a logic to add the user_id to the cookie from this method itself, but now we are creating the session cookie in the passport-local-strategy itself. This will reduce redundant code, since we do not need to create session in all the different function like sign up and sign in as well. It the username and password was correct the session is created an stored in the passport-local-strategy file itself.
     // res.redirect(`/users/profile/${req.user.id}`);
     return res.redirect('/');
+}
+
+
+module.exports.createFriend = async function(req, res){
+    try {
+        let user = await User.findById(req.user.id);
+        if(user){
+            user.friends.push(req.params.id);
+            await user.save();
+        }
+        let user2 = await User.findById(req.params.id);
+        if(user2){
+            user2.friends.push(req.user.id);
+            await user2.save();                
+        } 
+        let friendsRelation = await Friends.create({
+            from_user : req.user.id,
+            to_user : req.params.id
+        });
+        if(friendsRelation){
+            console.log('Friends Relation Established.');
+        }
+        return res.redirect('back');
+    } catch (error) {
+        console.log(error);
+    }    
 }

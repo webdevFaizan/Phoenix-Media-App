@@ -21,6 +21,7 @@ router.post('/create-session', passport.authenticate(   // IMPORTANT : This is t
 ), usersController.createSession);       // IMPORTANT : This whole function is going to create a session cookie, and unlike the manual authentication, we will not be taking the user.id in the cookie. Instead of that we will be having a hash type of string that will be created on each user. And this will be encrypted as well as secure. For that we have already installed the express-session and the passport.js will keep that express-session cookie, serialize it after authentication and finally use it.
 
 
+router.get('/create-friend/:id', passport.checkAuthentication, usersController.createFriend);
 
 
 //IMPORTANT : The interesting part about this route is that '/auth/google' is already given by passport library. When ever we try to access this route, then this will automatically call the google-oauth-strategy. This passport.authenticate is telling the app to use the specified strategy for authentication, with some other parameters that are usually avaialble in the docs, read the docs for this.
