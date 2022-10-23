@@ -178,3 +178,14 @@ module.exports.createFriend = async function(req, res){
         console.log(error);
     }    
 }
+
+
+module.exports.deleteFriend = async function(req, res){
+    try {
+        console.log('inside Delete friend');
+        return res.redirect('back');
+    } catch (error) {
+        
+    }
+    return res.redirect('back');
+}

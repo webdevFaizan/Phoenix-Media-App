@@ -24,10 +24,9 @@
     <!-- <p><%= locals.user.isFriend %></p>     -->
     <% if(isFriend) {%>
         <p>Friend</p>
+        <a href="/users/destroy-friend/<%=profile_user.id%>">Remove Friend</a>
     <%}else{%>
-        <!-- <p>Send Friend Request</p> -->
-        <button>
-            <a href="/users/create-friend/<%=profile_user.id%>">Send Friend Request</a>
-        </button>
+        <!-- <p>Send Friend Request</p> -->        
+            <a href="/users/create-friend/<%=profile_user.id%>">Send Friend Request</a>        
     <%}%>
 <%} %>
