@@ -35,6 +35,9 @@
         <section id="user-friends">
             <h4>Friends</h4>
             <%if(locals.user){%>
+                <% if(friends.length===0) {%>
+                    <p>No friends to Show</p>
+                <%}%>
                 <ul>
                     <% for(u of friends){ %>
                         <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->

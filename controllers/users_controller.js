@@ -91,7 +91,6 @@ module.exports.create = async function(req,res){
         req.flash('error', 'Passwords do not match');
         return res.redirect('back');
     }
-
     try {
         var foundUser = await User.findOne({email : req.body.email});
         if(foundUser){
@@ -107,11 +106,9 @@ module.exports.create = async function(req,res){
                 return res.redirect(`/users/profile/${foundUser.id}`);
             }
         }
-    } catch (error) {
+    }catch(error){
         req.flash('error', err);
     }
-
-    
 }
 
 
@@ -154,6 +151,8 @@ module.exports.createSession = function(req, res){
 }
 
 
+
+
 module.exports.createFriend = async function(req, res){
     try {
         let user = await User.findById(req.user.id);
@@ -180,6 +179,8 @@ module.exports.createFriend = async function(req, res){
 }
 
 
+
+
 module.exports.deleteFriend = async function(req, res){
     try {
         let user = await User.findById(req.user.id);
@@ -191,7 +192,7 @@ module.exports.deleteFriend = async function(req, res){
         if(user2){
             user2.friends.pull(req.user.id);
             await user2.save();                
-        } 
+        }
         let found1 = await Friends.findOne({from_user: req.user.id});
         let found2 = await Friends.findOne({from_user: req.params.id});
         if(found1)
@@ -199,10 +200,22 @@ module.exports.deleteFriend = async function(req, res){
         if(found2)
         found2.remove();
 
-        Friends.save();
+        // Friends.save();
         return res.redirect('back');
     } catch (error) {        
         console.log(error);
     }
+    return res.redirect('back');
+}
+
+
+module.exports.forgotPassword = function(req, res){
+    console.log('Inside forgot Password method');
+    return res.redirect('back');
+}
+
+
+module.exports.resetPassword = function(req,res){
+    console.log('Inside reset Password method');
     return res.redirect('back');
 }
