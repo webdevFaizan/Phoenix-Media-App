@@ -6,6 +6,7 @@ const path = require('path');
 const Friends = require('../models/friends');
 // const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const resetPasswordMailer = require('../mailers/reset_password_mailer.js');
 
 module.exports.profile = function(req, res){
     User.findById(req.params.id, function(err, user){
@@ -16,7 +17,6 @@ module.exports.profile = function(req, res){
                 isFriend = true;
             }
         }
-
         return res.render('user_profiles', {
             title: 'User Profile',
             profile_user : user,
@@ -228,10 +228,13 @@ module.exports.resetPassword = function(req,res){
 
 
 module.exports.generateForgotToken = async function(req,res){
-    // console.log(req.body.email);    
+    // console.log(req.body.email);
+    let email = req.body.email;
     let token = jwt.sign({email : req.body.email} , 'phoenix', {expiresIn : 100000});
     console.log(token);
-    let verifiedToken = jwt.verify(token,'phoenix');
-    console.log(verifiedToken);
+    resetPasswordMailer.resetPassword(token,email);
+    // let verifiedToken = jwt.verify(token,'phoenix');
+    // console.log(verifiedToken);
+
     return res.redirect('back');
 }
