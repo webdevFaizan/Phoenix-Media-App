@@ -247,9 +247,10 @@ module.exports.generateForgotToken = async function(req,res){
 
 
 module.exports.verifyToken = async function(req,res){
-    // console.log('Token received');    
+    console.log('Token received');    
     let verifiedToken = jwt.verify(req.params.token,'phoenix');    
-    let user = await User.findOne({email : verifiedToken.email});    
+    let user = await User.findOne({email : verifiedToken.email});   
+    console.log(verifiedToken);
     if(user){
         return res.render('reset_password',{
             email : verifiedToken.email,

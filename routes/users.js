@@ -29,7 +29,7 @@ router.post('/generate-forgot-token', usersController.generateForgotToken);
 
 
 //IMPORTANT : The following is the router to handle the reset password.
-// router.get('/:token', usersController.verifyToken);
+router.get('/authentication/:token', usersController.verifyToken);      //IMPORTANT : Initially I was having a /:token, which means when other routes below this line of code, the control will automatically enter into this controller, it is kind of a partial match, but since we want to enter into this link only when the route is an exact match, but for that we need to have a /authentication/:token to uniquely identify it as compared to others.
 
 
 //Password to be updated after token verification.

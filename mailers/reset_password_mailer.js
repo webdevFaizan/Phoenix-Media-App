@@ -2,7 +2,7 @@ const nodeMailer = require('../config/nodemailer');
 
 // this is another way of exporting a method, instead of using module.exports we could use exports.newComment = ...something
 exports.resetPassword = (token,email) => {
-    let url = `http://localhost:8000/users/${token}`
+    let url = `http://localhost:8000/users/authentication/${token}`
     let htmlString = nodeMailer.renderTemplate({url: url}, '/reset_password/reset_password_mailer.ejs');
     nodeMailer.transporter.sendMail({
        from: 'backup.errorcode@gmail.com',
