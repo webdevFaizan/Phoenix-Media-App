@@ -6,9 +6,18 @@ const path = require('path');
 
 module.exports.profile = function(req, res){
     User.findById(req.params.id, function(err, user){
+        let isFriend = false;
+        for(u of req.user.friends)
+        {
+            if(u==req.params.id){
+                isFriend = true;
+            }
+        }
+
         return res.render('user_profiles', {
             title: 'User Profile',
-            profile_user : user
+            profile_user : user,
+            isFriend : isFriend
         })
     })    
 }

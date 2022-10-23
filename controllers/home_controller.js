@@ -34,6 +34,8 @@ const User = require('../models/user');
 // }
 
 
+
+
 // IMPORTANT : METHOD 2 - This version of function is asynchronous as it makes the method non-synchronous.
 module.exports.home = async function(req, res){
     try{
@@ -50,10 +52,11 @@ module.exports.home = async function(req, res){
         return res.render('home', {
             title: "Phoenix Media App | Home",
             posts:  posts,
-            all_users: users
+            all_users: users,
+            friends : req.user.friends
         });
     }catch(err){
         console.log('Error', err);
         return;
     }
-}   
+}

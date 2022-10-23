@@ -20,4 +20,11 @@
     <img src="<%= profile_user.avatar %>" alt="<%= profile_user.name %>" width="100">
     <p><%= profile_user.name %></p>
     <p><%= profile_user.email %></p>
+    <!-- <p><%= 23 %></p> -->
+    <!-- <p><%= locals.user.isFriend %></p>     -->
+    <% if(isFriend) {%>
+        <p>Friend</p>
+    <%}else{%>
+        <p>Send Friend Request</p>
+    <%}%>
 <%} %>

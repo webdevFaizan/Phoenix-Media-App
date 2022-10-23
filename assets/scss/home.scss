@@ -6,12 +6,25 @@
         padding: 10px;
     }
 
-    #user-friends{
+    #list-of-users{
         width: 20%;
-        padding: 10px;
-        border-left: 2px solid green;
-        border-top: 2px solid red;
-        border-bottom: 2px solid blue;
-        border-right: 2px solid yellow;
+
+        #all-users{
+            width: 100%;
+            padding: 10px;
+            border-left: 2px solid green;
+            border-top: 2px solid red;
+            border-bottom: 2px solid blue;
+            border-right: 2px solid yellow;
+        }
+    
+        #user-friends{
+            width: 100%;
+            padding: 10px;
+            border-left: 2px solid green;
+            // border-top: 2px solid red;
+            border-bottom: 2px solid blue;
+            border-right: 2px solid yellow;
+        }
     }
 }

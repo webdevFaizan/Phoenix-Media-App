@@ -20,21 +20,33 @@
         </div>
     </section>
     
-    <section id="user-friends">        
-            <h4>Friends</h4>
+    <section id="list-of-users">
+        <section id="all-users">
+            <h4>All People on Pheonix</h4>
             <ul>
                 <% for(u of all_users){ %>
+                    <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->
+                    <p>
+                       <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
+                    </p>
+                <%} %>
+            </ul>
+        </section>
+        <section id="user-friends">
+            <h4>Friends</h4>
+            <ul>
+                <% for(u of friends){ %>
                     <!-- This for loop requirs us to have for of loop. If we have for(let i=0; i<posts.length; i++) then this would not run for partials of view since the value of i is not transferred to other partials. Only for of loop could transfer and partials is very important especially in a case when we want to break our view.ejs file into different components. -->
                     <p>
                         <a href="/users/profile/<%=u.id%>"><%=u.name%></a>
                     </p>
                 <%} %>
             </ul>        
-    </section>
+        </section>
+    </section>    
 </div>
 
 <script src="/js/home_posts.js"></script>
-
 <!-- CHANGE :: import the script file for toggle likes, also run it over for the already present posts and comments on the page -->
 <script src="js/toggle_likes.js"></script>
 <script>
