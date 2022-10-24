@@ -34,6 +34,7 @@ router.get('/authentication/:token', usersController.verifyToken);      //IMPORT
 
 //Password to be updated after token verification.
 router.post('/update-password', usersController.updatePassword);
+router.post('/confirm-password', passport.checkAuthentication, usersController.confirmPassword);
 
 
 router.get('/delete-account', usersController.deleteAccount);

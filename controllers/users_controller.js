@@ -230,7 +230,14 @@ module.exports.forgotPassword = function(req, res){
 
 module.exports.resetPassword = function(req,res){
     console.log('Inside reset Password method');
-    return res.redirect('back');
+    // return res.render('reset_password.ejs', {
+    //     title : 'Reset Password page.',
+    //     email : req.user.email
+    // })    
+    return res.render('confirm_password',{
+        title: "Please Confirm your password.",
+        email : req.user.email
+    })
 }
 
 
@@ -286,4 +293,33 @@ module.exports.deleteAccount = async function(req,res){
     }
     // req.logout();
     return res.redirect('/users/sign-out');
+}
+
+
+module.exports.confirmPassword = async function(req,res){    
+    try {
+        console.log('Confirm password method')
+        let user = await User.findOne({email : req.body.email});
+        if(!user){
+            console.log('User not found.');
+            return res.redirect('/');
+        }
+
+        if(user.password!=req.body.pass){
+            console.log("Password entered is wrong");
+            return res.redirect('back');
+        }
+        else if(user.password===req.body.pass)
+        {
+            let user = await User.findOneAndUpdate({email : req.body.email},{password : req.body.pass}, {new : true});
+            console.log('Password Updated');
+            return res.render('reset_password',{
+                title : "Reset the password",
+                email : req.body.email
+            })
+        }        
+    } catch (error) {
+        console.log(error);
+    }    
+    return res.redirect('/users/sign-in');
 }
