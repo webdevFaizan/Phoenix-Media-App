@@ -270,15 +270,21 @@ module.exports.verifyToken = async function(req,res){
 }
 
 module.exports.updatePassword = async function(req,res){
+    // console.log(req.body.pass);
+    // console.log(req.body.confirmPass);
+    
+    // IMPORTANT : The following could be handled using AJAX and in the case of ajax, we do not need to have a return statement, if the pass and confirmPass is wrong then this could be handled in the front end and no need to take it to back end.
     if(req.body.pass!==req.body.confirmPass){
         console.log('Password does not match.');
-        return res.redirect('/users/sign-in');
+        req.flash('error', 'Password does not match.');
+        return res.redirect('..');      //IMPORTANT : This is also a method of going back to the back page, and using 'back' would take it to through the 'GET' method, but using '..' would take it back through the method it came through, and in this case, here it came through POST method.
     }
     else{
         let user = await User.findOneAndUpdate({email : req.body.email}, {password : req.body.pass}, {new : true});
-        console.log(user);
-        console.log('Password updated');
-        return res.redirect('/users/sign-in');
+        // console.log(user);
+        // console.log('Password updated');
+        req.flash('success', 'Password successfully updated.');
+        return res.redirect('/');
     }
 }
 
@@ -289,6 +295,7 @@ module.exports.deleteAccount = async function(req,res){
     console.log(user);
     if (user){
         user.remove();
+        req.flash('success', 'Account has been deleted');
         // user.save();
     }
     // req.logout();
@@ -302,11 +309,13 @@ module.exports.confirmPassword = async function(req,res){
         let user = await User.findOne({email : req.body.email});
         if(!user){
             console.log('User not found.');
+            req.flash('error', 'User not found.');
             return res.redirect('/');
         }
 
         if(user.password!=req.body.pass){
             console.log("Password entered is wrong");
+            req.flash('error', 'The entered password is wrong.');
             return res.redirect('back');
         }
         else if(user.password===req.body.pass)
